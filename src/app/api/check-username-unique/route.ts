@@ -39,13 +39,16 @@ export async function GET(request: Request) {
       isVerified: true,
     });
 
-    if (!existingVerifiedUser) {
+    if (existingVerifiedUser) {
       throw new ApiError(400, "Username already taken");
     }
 
     return sendResponse(200, null, "username is unique");
   } catch (error) {
     console.error("Error checking username : ", error);
+    if (error instanceof ApiError) {
+      return sendErrorResponse(error);
+    }
     return sendErrorResponse(new ApiError(500, "Error Checking username"));
   }
 }

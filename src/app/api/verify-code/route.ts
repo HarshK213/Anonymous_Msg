@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       throw new ApiError(400, "User not found");
     }
 
-    const isCodeValid = user.verifyCode === code;
+    const isCodeValid = user.verifyCode == code;
     const isCodeNotExpired = new Date(user.verifyCodeExp) > new Date();
 
     if (isCodeNotExpired && isCodeValid) {
@@ -23,8 +23,12 @@ export async function POST(request: Request) {
       await user.save();
       return sendResponse(200, null, "Account Verified successfully");
     } else if (!isCodeNotExpired) {
-      throw new ApiError(400, "verification code has expired, please signin again to get a new code");
+      throw new ApiError(
+        400,
+        "verification code has expired, please signin again to get a new code",
+      );
     } else {
+      console.log(user);
       throw new ApiError(400, "Invalid verification code");
     }
   } catch (error) {
