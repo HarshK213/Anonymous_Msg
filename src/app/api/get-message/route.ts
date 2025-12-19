@@ -5,7 +5,7 @@ import UserModel from "@/models/user.model";
 import { User } from "next-auth";
 import ApiError, { sendErrorResponse } from "@/lib/ApiError";
 import { sendResponse } from "@/lib/ApiResponse";
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 
 export async function GET(request: Request) {
   await dbConnect();
@@ -26,16 +26,16 @@ export async function GET(request: Request) {
 
     const user = await UserModel.aggregate([
       { $match: { id: userId } },
-      { $unwind: "messages" },
-      { $sort: { "messages.createdAt": -1 } },
-      { $group: { _id: "$_id", messages: { $push: "$messages" } } },
+      { $unwind: "message" },
+      { $sort: { "message.createdAt": -1 } },
+      { $group: { _id: "$_id", message: { $push: "$message" } } },
     ]);
 
     if (!user || user.length == 0) {
       throw new ApiError(404, "User not found");
     }
 
-    return sendResponse(200, user[0].messages, "messages retrieved");
+    return sendResponse(200, user[0].message, "messages retrieved");
   } catch (error) {
     console.error("Error while getting message");
     if (error instanceof ApiError) {
