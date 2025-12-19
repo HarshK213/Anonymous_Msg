@@ -18,4 +18,29 @@ export async function GET(request: Request) {
   }
 
   const userId = new mongoose.Types.ObjectId(user._id);
+
+  try {
+    /*
+        Mongo DB Aggregation pipeline is used.
+    */
+
+    const user = await UserModel.aggregate([
+      { $match: { id: userId } },
+      { $unwind: "messages" },
+      { $sort: { "messages.createdAt": -1 } },
+      { $group: { _id: "$_id", messages: { $push: "$messages" } } },
+    ]);
+
+    if (!user || user.length == 0) {
+      throw new ApiError(404, "User not found");
+    }
+
+    return sendResponse(200, user[0].messages, "messages retrieved");
+  } catch (error) {
+    console.error("Error while getting message");
+    if (error instanceof ApiError) {
+      return sendErrorResponse(error);
+    }
+    return sendErrorResponse(new ApiError(500, "Error while getting message"));
+  }
 }
