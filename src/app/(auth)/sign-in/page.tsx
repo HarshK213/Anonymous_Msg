@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Component() {
@@ -9,14 +9,14 @@ export default function Component() {
         Signed in as {session.user.email} <br />
         <button onClick={() => signOut()}>Sign Out</button>
       </>
-    )
+    );
   }
   return (
     <>
       Not Signed In <br />
-      <button onClick={() => signIn()} > Sign in</button>
+      <button onClick={() => signIn()}> Sign in</button>
     </>
-  )
+  );
 }
 
 // import React from 'react'
