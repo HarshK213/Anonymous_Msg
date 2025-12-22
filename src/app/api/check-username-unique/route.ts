@@ -27,7 +27,7 @@ export async function GET(request: Request) {
         400,
         usernameErrors.length > 0
           ? usernameErrors.join(", ")
-          : "Invalid query parameters",
+          : "Invalid query parameters"
       );
     }
 

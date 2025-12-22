@@ -17,15 +17,21 @@ export async function POST(request: Request) {
 
     const isCodeValid = user.verifyCode == code;
     const isCodeNotExpired = new Date(user.verifyCodeExp) > new Date();
+    const isValidated = user.isVerified;
 
-    if (isCodeNotExpired && isCodeValid) {
+    if (isCodeNotExpired && isCodeValid && !isValidated) {
       user.isVerified = true;
       await user.save();
       return sendResponse(200, null, "Account Verified successfully");
+    } else if(isValidated){
+        throw new ApiError(
+            400,
+            "User has already verified"
+        );
     } else if (!isCodeNotExpired) {
       throw new ApiError(
         400,
-        "verification code has expired, please signin again to get a new code",
+        "verification code has expired\nPlease signin again to get a new code",
       );
     } else {
       console.log(user);
