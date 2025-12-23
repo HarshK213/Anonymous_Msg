@@ -17,6 +17,8 @@ const MessageSchema: Schema<Message> = new Schema({
   },
 });
 
+export const MessageModel = (mongoose.models.Message as mongoose.Model<Message>) || mongoose.model<Message>("Message", MessageSchema);
+
 interface User extends Document {
   username: string;
   email: string;
