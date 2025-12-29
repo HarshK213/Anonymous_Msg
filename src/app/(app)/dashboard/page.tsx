@@ -13,26 +13,28 @@ import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import MessageCard from "@/components/MessageCard"
+import { User } from "next-auth";
 
 const Page = () => {
 
     const [messages, setMessages] = useState<Message[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [switchLoading, setSwitchLoading] = useState(false);
-    
+
     const handleDeleteMessage = (messageId: string) => {
         setMessages(messages.filter((message) => String(message._id) !== messageId))
     }
-    const { data: session } = useSession();
-    
+    const { data: session, status } = useSession();
+
     const form = useForm({
         resolver: zodResolver(acceptMsgValidation)
     })
-    
+
     const { register, watch, setValue } = form;
-    
+
     const acceptMsg = watch('acceptMsg');
-    
+
     const fetchAcceptMsg = useCallback(async()=>{
         setSwitchLoading(true);
         try{
@@ -46,7 +48,7 @@ const Page = () => {
             setSwitchLoading(false);
         }
     },[setValue])
-    
+
     const fetchMsg = useCallback(async (refresh: boolean = true) => {
         setIsLoading(true);
         setSwitchLoading(true);
@@ -58,19 +60,20 @@ const Page = () => {
             }
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>
+            console.log(axiosError)
             toast.error("error while fetching messages in dashboard")
         } finally{
             setIsLoading(false);
             setSwitchLoading(false);
         }
     },[setIsLoading, setMessages])
-    
-    useEffect(() => { 
+
+    useEffect(() => {
         if(!session || !session.user)return
         fetchMsg();
         fetchAcceptMsg();
     }, [session, setValue, fetchAcceptMsg, fetchMsg])
-    
+
     const handleSwitchChange = async() => {
         try{
             const response = await axios.post<ApiResponse>('/api/accept-message',{
@@ -83,15 +86,29 @@ const Page = () => {
             toast.error("error while changing state of accepting message in dashboard")
         }
     }
-    
-    if(!session || !session.user){
-        return <div>Please Login</div>
+
+    if (status === "loading") {
+      return <div>Loading...</div>;
     }
+    
+    if (status === "unauthenticated") {
+      return <div>Please Login</div>;
+    }
+    
+    const { username } = session?.user as User;
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    const profileUrl = `${baseUrl}/u/${username}`
+
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(profileUrl);
+        toast.success("Profile URL copied successfully");
+    }
+
     
     return (
         <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
               <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
-        
+
               <div className="mb-4">
                 <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{' '}
                 <div className="flex items-center">
@@ -104,7 +121,7 @@ const Page = () => {
                   <Button onClick={copyToClipboard}>Copy</Button>
                 </div>
               </div>
-        
+
               <div className="mb-4">
                 <Switch
                   {...register('acceptMsg')}
@@ -117,7 +134,7 @@ const Page = () => {
                 </span>
               </div>
               <Separator />
-        
+
               <Button
                 className="mt-4"
                 variant="outline"
@@ -136,7 +153,7 @@ const Page = () => {
                 {messages.length > 0 ? (
                   messages.map((message, index) => (
                     <MessageCard
-                      key={message._id}
+                      key={String(message._id)}
                       message={message}
                       onMessageDelete={handleDeleteMessage}
                     />

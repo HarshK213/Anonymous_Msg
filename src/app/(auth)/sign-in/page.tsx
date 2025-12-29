@@ -14,13 +14,15 @@ import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import { signIn } from "next-auth/react";
-import bcrypt from "bcryptjs";
+import { useRouter } from "next/navigation";
 
 
 
 const Page = () => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const router = useRouter();
 
     const form = useForm<z.infer<typeof signinValidation>>({
 		resolver: zodResolver(signinValidation),
@@ -38,12 +40,11 @@ const Page = () => {
              password: data.password,
          })
 
-        console.log(response);
-
          if(response?.error){
              toast.error(response.error);
          }else{
              toast.success("Login successfully");
+             router.replace("/dashboard");
          }
     }
 
