@@ -1,0 +1,17 @@
+[
+    {
+        "title" : "Message from test1",
+        "content" : "Hello World",
+        "recieved" : "10 minutes ago"
+    },
+    {
+        "title" : "Message from test2",
+        "content" : "Hi, World",
+        "recieved" : "2 Hours ago"
+    },
+    {
+        "title" : "Message from test1",
+        "content" : "Yo whats up world",
+        "recieved" : "1 day ago"
+    }
+]
