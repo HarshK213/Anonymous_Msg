@@ -11,36 +11,47 @@ export async function GET(request: Request) {
   await dbConnect();
 
   const session = await getServerSession(authOptions);
-  const user: User = session?.user as User;
 
   if (!session || !session.user) {
-    return sendErrorResponse(new ApiError(500, "Not Authenticated"));
+    return sendErrorResponse(new ApiError(401, "Not Authenticated"));
   }
 
-  const userId = new mongoose.Types.ObjectId(user._id);
+  const user = session.user as User;
 
   try {
-    /*
-        Mongo DB Aggregation pipeline is used.
-    */
+    // Convert string ID to ObjectId
+    const userId = new mongoose.Types.ObjectId(user._id);
 
-    const user = await UserModel.aggregate([
-      { $match: { id: userId } },
-      { $unwind: "message" },
+    const result = await UserModel.aggregate([
+      { $match: { _id: userId } },
+      { $unwind: "$message" }, // Assuming your field is "messages", not "message"
       { $sort: { "message.createdAt": -1 } },
-      { $group: { _id: "$_id", message: { $push: "$message" } } },
+      { $group: {
+          _id: "$_id",
+          messages: { $push: "$message" } // Rename to "messages" for consistency
+        }
+      },
     ]);
 
-    if (!user || user.length == 0) {
-      throw new ApiError(404, "User not found");
+    if (!result || result[0].messages.length === 0) {
+      return sendResponse(200, [], "No messages found");
     }
 
-    return sendResponse(200, user[0].message, "messages retrieved");
+
+    return sendResponse(200, result[0].messages, "Messages retrieved successfully");
+
   } catch (error) {
-    console.error("Error while getting message");
+    console.error("Error while getting messages:", error);
+
     if (error instanceof ApiError) {
       return sendErrorResponse(error);
     }
-    return sendErrorResponse(new ApiError(500, "Error while getting message"));
+
+    // Check for mongoose CastError (invalid ObjectId)
+    if (error instanceof mongoose.Error.CastError) {
+      return sendErrorResponse(new ApiError(400, "Invalid user ID format"));
+    }
+
+    return sendErrorResponse(new ApiError(500, "Error while getting messages"));
   }
 }

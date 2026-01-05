@@ -12,21 +12,28 @@ const Navbar = () => {
     const user: User = session?.user as User;
 
     return (
-        <nav className="p-4 md:p-6 shadow-md">
-            <div className="container flex flex-col md:flex-row justify-between items-center">
-                <Link className="text-xl font-bold mb-4 md:mb-0" href="/">Mystery Message</Link>
+        <nav className="p-4 md:p-6 shadow-md bg-gray-50">
+            <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
+                <Link className="text-xl font-bold mb-4 md:mb-0 hover:text-blue-600 transition-colors" href="/">
+                    Mystery Message
+                </Link>
                 {
                     session?(
-                        <>
-                            <span className="">Welcome, {user?.username || user?.email}</span>
-                            <Button className="w-full md:w-auto" onClick={() => signOut()}>Sign Out</Button>
-                        </>
+                        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+                            <span className="text-gray-700 font-medium">Welcome, {user?.username || user?.email}</span>
+                            <Button
+                                className="w-full md:w-auto bg-red-600 hover:bg-red-700"
+                                onClick={() => signOut()}
+                            >
+                                Sign Out
+                            </Button>
+                        </div>
                     ):(
-                        <>
-                            <Link href='/sign-in'>
-                                <Button className="w-full md:w-auto">Log In</Button>
-                            </Link>
-                        </>
+                        <Link href='/sign-in' className="w-full md:w-auto">
+                            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                                Log In
+                            </Button>
+                        </Link>
                     )
                 }
             </div>

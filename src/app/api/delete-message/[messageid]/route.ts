@@ -9,7 +9,7 @@ import mongoose from "mongoose";
 
 export async function DELETE(request: Request, {params}:{params: {messageid: string}}) {
 
-    const messageId = params.messageid;
+    const {messageid} = await params;
     await dbConnect();
 
   const session = await getServerSession(authOptions);
@@ -20,14 +20,17 @@ export async function DELETE(request: Request, {params}:{params: {messageid: str
   }
 
   try{
-      const updatedResult = await UserModel.updateOne(
-          {_id: user._id},
-          {$pull : {messages:{_id : messageId}}}
-      )
+        const userId = new mongoose.Types.ObjectId(user._id);
+        const messageObjectId = new mongoose.Types.ObjectId(messageid);
 
-      if(updatedResult.modifiedCount == 0){
-          throw new ApiError(404, "Message not found or already deleted");
-      }
+        const updatedResult = await UserModel.updateOne(
+            { _id: userId },
+            { $pull: { message: { _id: messageObjectId } } }
+        );
+
+        if(updatedResult.modifiedCount == 0 || !updatedResult.acknowledged){
+            throw new ApiError(404, "Message not found or already deleted");
+        }
 
       return sendResponse(200, updatedResult, "Message deleted successfully");
 

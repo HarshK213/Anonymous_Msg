@@ -40,11 +40,10 @@ const Page = () => {
       });
 
       const ansMessage = response.data.message;
-    console.log(ansMessage);
 
       if (ansMessage === "User is not accepting any message") {
         setNotAccepting(true);
-      } else if(ansMessage === ""){
+      } else if(ansMessage === "message send successfully"){
         toast.success("Message sent successfully");
         setMessage("");
       }

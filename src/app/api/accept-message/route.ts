@@ -6,6 +6,8 @@ import { User } from "next-auth";
 import ApiError, { sendErrorResponse } from "@/lib/ApiError";
 import { sendResponse } from "@/lib/ApiResponse";
 
+
+/* To Update the accept message status */
 export async function POST(request: Request) {
   await dbConnect();
 
@@ -32,12 +34,11 @@ export async function POST(request: Request) {
         "failed to update user status to accepting message",
       );
     }
-    
-      console.log(updatedUser);
+
     return sendResponse(
-      200,
-      updatedUser,
-      "Message acceptance updated successfully",
+        200,
+        updatedUser,
+        "Message acceptance updated successfully",
     );
   } catch (error) {
     console.error("failed to update user status to accept message");
@@ -52,6 +53,7 @@ export async function POST(request: Request) {
   }
 }
 
+/* To get the current accept message status */
 export async function GET(request: Request) {
   await dbConnect();
 
@@ -68,12 +70,11 @@ export async function GET(request: Request) {
     const userFound = await UserModel.findById(userId);
 
     if (!userFound) {
-      throw new ApiError(401, "User not founc");
+      throw new ApiError(401, "User not found");
     }
-
     return sendResponse(
       200,
-      userFound.isAcceptingMsg,
+      userFound,
       "User found successfully",
     );
   } catch (error) {

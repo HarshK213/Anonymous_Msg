@@ -211,8 +211,7 @@ const Page = () => {
     try {
       setSwitchLoading(true);
       const res = await axios.get<ApiResponse>("/api/accept-message");
-        console.log(res.data.success);
-      setValue("acceptMsg", res.data.isAcceptingMsg);
+      setValue("acceptMsg", res.data.data?.isAcceptingMsg || false);
     } catch {
       toast.error("Failed to fetch message status");
     } finally {
@@ -223,15 +222,14 @@ const Page = () => {
   /* ---------------- FETCH MESSAGES ---------------- */
   const fetchMessages = useCallback(async (showToast = false) => {
     try {
-      setIsLoading(true);
-      const res = await axios.get<ApiResponse>("/api/get-message");
-        console.log(res.data);
-      setMessages(res.data.messages || []);
-      if (showToast) toast.success("Messages refreshed");
+        setIsLoading(true);
+        const res = await axios.get<ApiResponse>("/api/get-message");
+        setMessages(res.data?.data || []);
+        if (showToast) toast.success("Messages refreshed");
     } catch {
-      toast.error("Failed to fetch messages");
+        toast.error("Failed to fetch messages");
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
   }, []);
 
@@ -302,6 +300,7 @@ const Page = () => {
                     "/api/accept-message",
                     { acceptMessage: checked }
                   );
+                  console.log(res.data)
                   field.onChange(checked);
                   toast.success(res.data.message);
                 } catch {
