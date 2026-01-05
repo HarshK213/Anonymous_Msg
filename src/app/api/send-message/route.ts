@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     if (!user.isAcceptingMsg) {
-      throw new ApiError(403, "User is not accepting any message");
+      throw new ApiError(400, "User is not accepting any message");
     }
 
     const newMessage = { content, createdAt: new Date() };

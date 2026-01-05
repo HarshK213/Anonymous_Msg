@@ -10,10 +10,13 @@ import {
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay";
 import messages from '@/messages.json';
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const Home = () => {
+    const router = useRouter();
     return (
-        <main className="flex flex-col items-center justify-center px-4 md:px-24 py-12">
+        <main className="flex flex-col justify-center items-center px-4 md:px-24 py-12 gap-6">
             <section className="text-center mb-8 md:mb-12">
                 <h1 className="font-bold text-3xl md:text-5xl">
                     Dive into the world of Anonymous Convertation
@@ -22,6 +25,11 @@ const Home = () => {
                     Explore Mystery message where your identity remain secret.
                 </p>
             </section>
+
+            <Button onClick={()=>router.replace('send-message')}>
+                Send Message
+            </Button>
+
             <Carousel className="w-full max-w-xs"
                 plugins={[
                         Autoplay({

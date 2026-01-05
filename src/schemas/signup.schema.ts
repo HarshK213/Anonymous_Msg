@@ -14,6 +14,10 @@ const usernameValidation = z
     "Username should not contain any special character",
   );
 
+const usernameSchema = z.object({
+    username: usernameValidation
+})
+
 // here we use z.object as we are validating multiple field at once
 const signupValidation = z.object({
   username: usernameValidation,
@@ -23,4 +27,4 @@ const signupValidation = z.object({
     .min(6, { message: "password should be atleast of 6 charcters" }),
 });
 
-export { usernameValidation, signupValidation };
+export { usernameValidation, signupValidation, usernameSchema };

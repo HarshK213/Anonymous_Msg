@@ -32,7 +32,8 @@ export async function POST(request: Request) {
         "failed to update user status to accepting message",
       );
     }
-
+    
+      console.log(updatedUser);
     return sendResponse(
       200,
       updatedUser,
