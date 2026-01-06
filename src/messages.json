@@ -1,17 +1,62 @@
 [
-    {
-        "title" : "Message from test1",
-        "content" : "Hello World",
-        "recieved" : "10 minutes ago"
-    },
-    {
-        "title" : "Message from test2",
-        "content" : "Hi, World",
-        "recieved" : "2 Hours ago"
-    },
-    {
-        "title" : "Message from test1",
-        "content" : "Yo whats up world",
-        "recieved" : "1 day ago"
-    }
+  {
+    "title": "Welcome to MessageHub!",
+    "content": "We're excited to have you join our community. Start connecting with people anonymously and securely.",
+    "received": "Just now"
+  },
+  {
+    "title": "Important Security Alert",
+    "content": "Your account was accessed from a new device in Berlin, Germany. If this wasn't you, please secure your account immediately.",
+    "received": "10 minutes ago"
+  },
+  {
+    "title": "You have 3 new messages",
+    "content": "People are reaching out to you! Check your inbox to see who's trying to connect.",
+    "received": "45 minutes ago"
+  },
+  {
+    "title": "Weekly Digest",
+    "content": "Here's what you missed this week: 15 new connections, 8 anonymous messages, and 3 profile views.",
+    "received": "2 hours ago"
+  },
+  {
+    "title": "Feedback Request",
+    "content": "How are you finding MessageHub so far? We'd love to hear your thoughts on improving the platform.",
+    "received": "1 day ago"
+  },
+  {
+    "title": "Anonymous Message",
+    "content": "Hey there! Really enjoyed our conversation yesterday. Looking forward to chatting again soon!",
+    "received": "2 days ago"
+  },
+  {
+    "title": "Account Verification",
+    "content": "Please verify your email address to unlock all features and ensure account security.",
+    "received": "3 days ago"
+  },
+  {
+    "title": "New Follower",
+    "content": "Someone started following your profile. Check out who's interested in your updates!",
+    "received": "1 week ago"
+  },
+  {
+    "title": "Platform Update",
+    "content": "New feature alert: You can now schedule messages and set custom themes for your profile.",
+    "received": "1 week ago"
+  },
+  {
+    "title": "Community Highlight",
+    "content": "You've been featured as an active member this month! Thank you for being part of our growing community.",
+    "received": "2 weeks ago"
+  },
+  {
+    "title": "Birthday Wishes",
+    "content": "Happy Birthday! Wishing you a fantastic day filled with joy and meaningful connections.",
+    "received": "1 month ago"
+  },
+  {
+    "title": "Welcome Bonus",
+    "content": "As a new member, you've received 100 bonus credits to send premium messages.",
+    "received": "1 month ago"
+  }
 ]
