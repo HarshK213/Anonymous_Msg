@@ -1,3 +1,7 @@
+import { NextResponse } from 'next/server';
+import { Message } from '@/models/user.model'
+
+
 class ApiResponse<T = null> {
   statuscode: number;
   data: T | null;
@@ -18,12 +22,25 @@ class ApiResponse<T = null> {
 
 export default ApiResponse;
 
-export function sendResponse<T = null>(
-  statusCode: number,
-  data?: T,
-  message?: string,
-) {
-  return Response.json(new ApiResponse<T>(statusCode, data ?? null, message), {
-    status: statusCode,
-  });
-}
+// Define specific response types
+export type ApiResponseData = {
+  isAcceptingMsg?: boolean;
+  messages?: Message[];
+  // Add other possible response shapes
+  [key: string]: unknown; // Use unknown instead of any
+};
+
+export const sendResponse = (
+  status: number,
+  data: ApiResponseData | null = null,
+  message: string = ""
+) => {
+  return NextResponse.json(
+    {
+      success: status < 400,
+      message,
+      data,
+    },
+    { status }
+  );
+};

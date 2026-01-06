@@ -39,6 +39,7 @@ const Page = () => {
     try {
       setSwitchLoading(true);
       const res = await axios.get<ApiResponse>("/api/accept-message");
+        console.log(res);
       setValue("acceptMsg", res.data.data?.isAcceptingMsg || false);
     } catch {
       toast.error("Failed to fetch message status");
@@ -52,7 +53,8 @@ const Page = () => {
     try {
         setIsLoading(true);
         const res = await axios.get<ApiResponse>("/api/get-message");
-        setMessages(res.data?.data || []);
+        console.log(res);
+        setMessages(res.data.data?.messages || []);
         if (showToast) toast.success("Messages refreshed");
     } catch {
         toast.error("Failed to fetch messages");

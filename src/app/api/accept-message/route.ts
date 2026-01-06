@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
     return sendResponse(
         200,
-        updatedUser,
+        null,
         "Message acceptance updated successfully",
     );
   } catch (error) {
@@ -74,8 +74,8 @@ export async function GET(request: Request) {
     }
     return sendResponse(
       200,
-      userFound,
-      "User found successfully",
+      { isAcceptingMsg: userFound.isAcceptingMsg },
+      "User found successfully"
     );
   } catch (error) {
     console.error("error in getting message acceptance status");

@@ -34,11 +34,11 @@ export async function GET(request: Request) {
     ]);
 
     if (!result || result[0].messages.length === 0) {
-      return sendResponse(200, [], "No messages found");
+      return sendResponse(200, { messages: [] }, "No messages found");
     }
 
 
-    return sendResponse(200, result[0].messages, "Messages retrieved successfully");
+    return sendResponse(200, result[0], "Messages retrieved successfully");
 
   } catch (error) {
     console.error("Error while getting messages:", error);

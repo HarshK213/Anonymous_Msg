@@ -66,7 +66,7 @@ export const POST = async (request: Request) => {
     }
     return sendResponse(
       201,
-      emailResponse,
+      null,
       "User registered successfully , Please verify your email",
     );
   } catch (error) {
