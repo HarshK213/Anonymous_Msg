@@ -152,7 +152,7 @@ const Home = () => {
                                             </CardContent>
                                             <CardFooter className="flex items-center justify-between border-t border-gray-100 pt-3">
                                                 <span className="text-sm text-gray-500 sm:text-base">
-                                                    {message.received}
+                                                    {message.recieved}
                                                 </span>
                                                 <div className="text-xs text-gray-400 sm:text-sm">
                                                     Anonymous Message
