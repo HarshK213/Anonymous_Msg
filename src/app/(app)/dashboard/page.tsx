@@ -62,12 +62,25 @@ const Page = () => {
     }
   }, []);
 
+      // const res = await axios.delete<ApiResponse>()
+      // setMessages((prev) =>
+      // prev.filter((msg) => String(msg._id) !== messageId)
   /* ---------------- DELETE MESSAGE ---------------- */
-  const handleDeleteMessage = (messageId: string) => {
-    setMessages((prev) =>
-      prev.filter((msg) => String(msg._id) !== messageId)
-    );
-  };
+  // const handleDeleteMessage = (messageId: string) => {
+  //   );
+  // };
+
+    const handleDeleteMessage = async(messageId : string) => {
+        try {
+            const res = await axios.delete<ApiResponse>(`/api/delete-message/${messageId}`);
+            setMessages((prev) =>
+                prev.filter((msg) => String(msg._id) !== messageId)
+            );
+            toast.success("Message deleted successfully");
+        }catch {
+            toast.error("Failed to delete messages");
+        }
+    }
 
   /* ---------------- INIT ---------------- */
   useEffect(() => {
@@ -135,7 +148,7 @@ const Page = () => {
               <p className="mb-4 text-sm text-gray-600 sm:text-base">
                 Share this link to receive anonymous messages
               </p>
-              
+
               <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <div className="relative flex-1">
                   <input
@@ -172,7 +185,7 @@ const Page = () => {
               <h2 className="mb-4 text-lg font-semibold text-gray-800 sm:text-xl">
                 Message Settings
               </h2>
-              
+
               <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4">
                 <div>
                   <p className="font-medium text-gray-800">Accept Messages</p>
@@ -222,7 +235,7 @@ const Page = () => {
                     {messages.length} message{messages.length !== 1 ? 's' : ''} received
                   </p>
                 </div>
-                
+
                 <Button
                   variant="outline"
                   onClick={() => fetchMessages(true)}

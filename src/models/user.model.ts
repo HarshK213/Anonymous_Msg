@@ -72,6 +72,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface Message {
+    _id: string;
   content: string;
   createdAt: Date;
 }

@@ -24,12 +24,12 @@ export async function GET() {
 
     const result = await UserModel.aggregate([
       { $match: { _id: userId } },
-      { $unwind: "$messages" }, // Assuming your field is "messages", not "message"
+      { $unwind: "$messages" },
       { $sort: { "messages.createdAt": -1 } },
       {
         $group: {
           _id: "$_id",
-          messages: { $push: "$messages" }, // Rename to "messages" for consistency
+          messages: { $push: "$messages" },
         },
       },
     ]);
