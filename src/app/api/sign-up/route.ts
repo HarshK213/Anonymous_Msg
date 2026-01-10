@@ -48,7 +48,6 @@ export const POST = async (request: Request) => {
         verifyCodeExp: expiryDate,
         isVerified: false,
         isAcceptinMessage: true,
-        message: [],
       });
 
       await newUser.save();
