@@ -24,16 +24,15 @@ export async function GET() {
 
     const result = await UserModel.aggregate([
       { $match: { _id: userId } },
-      { $unwind: "$message" }, // Assuming your field is "messages", not "message"
-      { $sort: { "message.createdAt": -1 } },
+      { $unwind: "$messages" }, // Assuming your field is "messages", not "message"
+      { $sort: { "messages.createdAt": -1 } },
       {
         $group: {
           _id: "$_id",
-          messages: { $push: "$message" }, // Rename to "messages" for consistency
+          messages: { $push: "$messages" }, // Rename to "messages" for consistency
         },
       },
     ]);
-
     if (!result || result[0].messages.length === 0) {
       return sendResponse(200, { messages: [] }, "No messages found");
     }
