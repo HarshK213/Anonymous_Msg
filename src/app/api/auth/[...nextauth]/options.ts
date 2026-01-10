@@ -10,6 +10,7 @@ type CredentialType = {
   password: string;
 };
 type User = {
+  id: string;
   _id: string;
   email: string;
   name: string;
@@ -50,12 +51,13 @@ export const authOptions: NextAuthOptions = {
 
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
-            user.password,
+            user.password
           );
 
           if (!isPasswordCorrect) throw new Error("Incorrect Password");
 
           return {
+            id: user._id.toString(),
             _id: user._id.toString(),
             email: user.email,
             name: user.username,
@@ -90,14 +92,15 @@ export const authOptions: NextAuthOptions = {
         });
 
         return {
+          id: profile.sub,
           _id: profile.sub,
           email: profile.email,
           name: profile.name,
           username: profile.name,
           isVerified: profile.email_verified === "true",
-          isAcceptingMsg:false,
-          providers: 'google',
-          providerIds: profile.sub,
+          isAcceptingMsg: false,
+          providers: ["google"],
+          providerIds: new Map([["google", profile.sub]]),
         };
       },
     }),
@@ -144,7 +147,7 @@ export const authOptions: NextAuthOptions = {
             user.id = existingUserByEmail._id.toString();
 
             console.log(
-              `Linked Google account to existing user: ${user.email}`,
+              `Linked Google account to existing user: ${user.email}`
             );
             return true;
           }
