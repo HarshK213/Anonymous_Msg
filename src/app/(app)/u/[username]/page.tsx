@@ -1,13 +1,8 @@
-'use client'
+"use client";
 
 import { useParams } from "next/navigation";
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-  FieldSet,
-} from "@/components/ui/field"
-import { Textarea } from "@/components/ui/textarea"
+import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Loader2, Send, User, MessageSquare, Shield } from "lucide-react";
@@ -49,17 +44,19 @@ const Page = () => {
       if (ansMessage === "User is not accepting any message") {
         setNotAccepting(true);
         toast.error(`${param.username} is not accepting messages currently`);
-      } else if(ansMessage === "message send successfully"){
+      } else if (ansMessage === "message send successfully") {
         toast.success("Your message has been sent anonymously!", {
           description: `${param.username} will see your message soon`,
         });
         setMessage("");
       }
-
     } catch (error) {
       console.error("Error sending message:", error);
       const axiosError = error as AxiosError<ApiResponse>;
-      toast.error(axiosError.response?.data.message || "Failed to send message. Please try again.");
+      toast.error(
+        axiosError.response?.data.message ||
+          "Failed to send message. Please try again."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -84,7 +81,10 @@ const Page = () => {
           <div className="mt-3 flex items-center justify-center gap-2 text-gray-600">
             <User className="h-4 w-4" />
             <p className="text-sm sm:text-base">
-              To: <span className="font-semibold text-primary">@{param.username}</span>
+              To:{" "}
+              <span className="font-semibold text-primary">
+                @{param.username}
+              </span>
             </p>
           </div>
         </div>
@@ -104,7 +104,8 @@ const Page = () => {
                       Your Message
                     </FieldLabel>
                     <p className="text-sm text-gray-600 sm:text-base">
-                      Share your thoughts anonymously. {param.username} won't know who sent this.
+                      Share your thoughts anonymously. {param.username}{" "}
+                      won&apos;t know who sent this.
                     </p>
                   </div>
 
@@ -119,10 +120,12 @@ const Page = () => {
                       disabled={isSubmitting}
                       maxLength={1000}
                     />
-                    
+
                     {/* Character Counter */}
                     <div className="mt-2 flex justify-end">
-                      <span className={`text-xs sm:text-sm ${isMessageTooLong ? 'text-red-600' : remainingChars < 100 ? 'text-amber-600' : 'text-gray-500'}`}>
+                      <span
+                        className={`text-xs sm:text-sm ${isMessageTooLong ? "text-red-600" : remainingChars < 100 ? "text-amber-600" : "text-gray-500"}`}
+                      >
                         {remainingChars} characters remaining
                       </span>
                     </div>
@@ -132,10 +135,13 @@ const Page = () => {
                         <div className="flex items-start gap-3">
                           <Shield className="mt-0.5 h-5 w-5 text-red-600" />
                           <div>
-                            <p className="font-semibold text-red-800">Messages Temporarily Disabled</p>
+                            <p className="font-semibold text-red-800">
+                              Messages Temporarily Disabled
+                            </p>
                             <p className="mt-1 text-sm text-red-700">
-                              @{param.username} is not accepting messages at the moment. 
-                              They may have disabled this feature temporarily.
+                              @{param.username} is not accepting messages at the
+                              moment. They may have disabled this feature
+                              temporarily.
                             </p>
                           </div>
                         </div>
@@ -149,11 +155,13 @@ const Page = () => {
                   <div className="flex items-start gap-3">
                     <Shield className="mt-0.5 h-5 w-5 text-blue-600" />
                     <div>
-                      <p className="font-semibold text-blue-800">Your Privacy is Protected</p>
+                      <p className="font-semibold text-blue-800">
+                        Your Privacy is Protected
+                      </p>
                       <ul className="mt-2 space-y-1 text-sm text-blue-700 sm:text-base">
                         <li>• Your message is completely anonymous</li>
                         <li>• No personal information is shared</li>
-                        <li>• You can't be identified as the sender</li>
+                        <li>• You can&apos;t be identified as the sender</li>
                       </ul>
                     </div>
                   </div>
@@ -199,11 +207,11 @@ const Page = () => {
               </ul>
             </div>
             <div className="rounded-lg bg-white p-4">
-              <h4 className="mb-2 font-medium text-gray-700">👎 Don'ts</h4>
+              <h4 className="mb-2 font-medium text-gray-700">👎 Don&apos;ts</h4>
               <ul className="space-y-1 text-sm text-gray-600">
-                <li>• Don't send spam or ads</li>
+                <li>• Don&apos;t send spam or ads</li>
                 <li>• Avoid hate speech</li>
-                <li>• Don't reveal your identity</li>
+                <li>• Don&apos;t reveal your identity</li>
                 <li>• No harassment allowed</li>
               </ul>
             </div>
@@ -213,8 +221,8 @@ const Page = () => {
         {/* Message Examples */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-500">
-            Examples: "Great content!", "Loved your recent post about...", 
-            "You're doing amazing work!"
+            Examples: &ldquo;Great content!&rdquo;, &ldquo;Loved your recent
+            post about...&rdquo;, &ldquo;You&apos;re doing amazing work!&rdquo;
           </p>
         </div>
 

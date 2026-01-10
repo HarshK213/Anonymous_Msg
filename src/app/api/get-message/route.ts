@@ -7,7 +7,7 @@ import ApiError, { sendErrorResponse } from "@/lib/ApiError";
 import { sendResponse } from "@/lib/ApiResponse";
 import mongoose from "mongoose";
 
-export async function GET(request: Request) {
+export async function GET() {
   await dbConnect();
 
   const session = await getServerSession(authOptions);
@@ -26,10 +26,11 @@ export async function GET(request: Request) {
       { $match: { _id: userId } },
       { $unwind: "$message" }, // Assuming your field is "messages", not "message"
       { $sort: { "message.createdAt": -1 } },
-      { $group: {
+      {
+        $group: {
           _id: "$_id",
-          messages: { $push: "$message" } // Rename to "messages" for consistency
-        }
+          messages: { $push: "$message" }, // Rename to "messages" for consistency
+        },
       },
     ]);
 
@@ -37,9 +38,7 @@ export async function GET(request: Request) {
       return sendResponse(200, { messages: [] }, "No messages found");
     }
 
-
     return sendResponse(200, result[0], "Messages retrieved successfully");
-
   } catch (error) {
     console.error("Error while getting messages:", error);
 

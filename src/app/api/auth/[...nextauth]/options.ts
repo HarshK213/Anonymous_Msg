@@ -5,10 +5,6 @@ import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/user.model";
 
-type CredentialType = {
-  identifier: string;
-  password: string;
-};
 type User = {
   id: string;
   _id: string;
@@ -106,7 +102,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       await dbConnect();
 
       if (account?.provider === "google") {
