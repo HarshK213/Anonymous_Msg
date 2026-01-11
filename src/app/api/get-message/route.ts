@@ -19,7 +19,6 @@ export async function GET() {
   const user = session.user as User;
 
   try {
-    // Convert string ID to ObjectId
     const userId = new mongoose.Types.ObjectId(user._id);
 
     const result = await UserModel.aggregate([
@@ -33,7 +32,12 @@ export async function GET() {
         },
       },
     ]);
-    if (!result || result[0].messages.length === 0) {
+
+    if (!result || result.length === 0) {
+      return sendResponse(200, { messages: [] }, "No messages found");
+    }
+
+    if (!result[0].messages || result[0].messages.length === 0) {
       return sendResponse(200, { messages: [] }, "No messages found");
     }
 
@@ -45,7 +49,6 @@ export async function GET() {
       return sendErrorResponse(error);
     }
 
-    // Check for mongoose CastError (invalid ObjectId)
     if (error instanceof mongoose.Error.CastError) {
       return sendErrorResponse(new ApiError(400, "Invalid user ID format"));
     }

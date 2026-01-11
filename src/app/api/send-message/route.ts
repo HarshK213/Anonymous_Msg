@@ -22,15 +22,7 @@ export async function POST(request: Request) {
     }
 
     const newMessage = { content, createdAt: new Date() };
-    // const originalLength = user.messages.length;
-    // console.log(originalLength);
     user.messages.push(newMessage as Message);
-    // console.log(user.messages.length);
-    // if (user.messages.length > originalLength) {
-    //     console.log("Message added successfully!");
-    //     console.log("username:", username, "\ncontent:", content);
-    // }
-
     await user.save();
 
     return sendResponse(200, null, "message send successfully");

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -35,7 +35,7 @@ const Page = () => {
 
   const { control, setValue } = form;
 
-  /* ---------------- FETCH ACCEPT MESSAGE STATUS ---------------- */
+  /* FETCH ACCEPT MESSAGE STATUS */
   const fetchAcceptMsg = useCallback(async () => {
     try {
       setSwitchLoading(true);
@@ -48,41 +48,37 @@ const Page = () => {
     }
   }, [setValue]);
 
-  /* ---------------- FETCH MESSAGES ---------------- */
+  /*  FETCH MESSAGES */
   const fetchMessages = useCallback(async (showToast = false) => {
     try {
-        setIsLoading(true);
-        const res = await axios.get<ApiResponse>("/api/get-message");
-        setMessages(res.data.data?.messages || []);
-        if (showToast) toast.success("Messages refreshed");
+      setIsLoading(true);
+      const res = await axios.get<ApiResponse>("/api/get-message");
+      setMessages(res.data.data?.messages || []);
+      if (messages.length === 0) {
+        toast.warning("No Message found");
+      } else if (showToast) toast.success("Messages refreshed");
     } catch {
-        toast.error("Failed to fetch messages");
+      toast.error("Failed to fetch messages");
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   }, []);
 
-      // const res = await axios.delete<ApiResponse>()
-      // setMessages((prev) =>
-      // prev.filter((msg) => String(msg._id) !== messageId)
-  /* ---------------- DELETE MESSAGE ---------------- */
-  // const handleDeleteMessage = (messageId: string) => {
-  //   );
-  // };
-
-    const handleDeleteMessage = async(messageId : string) => {
-        try {
-            const res = await axios.delete<ApiResponse>(`/api/delete-message/${messageId}`);
-            setMessages((prev) =>
-                prev.filter((msg) => String(msg._id) !== messageId)
-            );
-            toast.success("Message deleted successfully");
-        }catch {
-            toast.error("Failed to delete messages");
-        }
+  /* DELETE MESSAGE */
+  const handleDeleteMessage = async (messageId: string) => {
+    try {
+      const res = await axios.delete<ApiResponse>(
+        `/api/delete-message/${messageId}`,
+      );
+      setMessages((prev) =>
+        prev.filter((msg) => String(msg._id) !== messageId),
+      );
+      toast.success("Message deleted successfully");
+    } catch {
+      toast.error("Failed to delete messages");
     }
+  };
 
-  /* ---------------- INIT ---------------- */
   useEffect(() => {
     if (!session?.user) return;
 
@@ -93,7 +89,6 @@ const Page = () => {
     setProfileUrl(`${base}/u/${(session.user as User).username}`);
   }, [session, fetchMessages, fetchAcceptMsg]);
 
-  /* ---------------- AUTH STATES ---------------- */
   if (status === "loading") {
     return (
       <div className="flex min-h-screen items-center justify-center p-4">
@@ -110,20 +105,21 @@ const Page = () => {
       <div className="flex min-h-screen items-center justify-center p-4">
         <div className="w-full max-w-md rounded-lg border p-6 text-center">
           <h2 className="mb-4 text-2xl font-bold">Access Required</h2>
-          <p className="mb-6 text-muted-foreground">Please login to access your dashboard</p>
+          <p className="mb-6 text-muted-foreground">
+            Please login to access your dashboard
+          </p>
           <Button className="w-full sm:w-auto">Go to Login</Button>
         </div>
       </div>
     );
   }
 
-  /* ---------------- COPY LINK ---------------- */
+  /* COPY LINK */
   const copyToClipboard = () => {
     navigator.clipboard.writeText(profileUrl);
     toast.success("Profile URL copied to clipboard!");
   };
 
-  /* ---------------- UI ---------------- */
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-4 sm:p-6 md:p-8">
       <div className="mx-auto w-full max-w-6xl">
@@ -170,10 +166,7 @@ const Page = () => {
                     )}
                   </Button>
                 </div>
-                <Button
-                  onClick={copyToClipboard}
-                  className="h-12 px-4 sm:px-6"
-                >
+                <Button onClick={copyToClipboard} className="h-12 px-4 sm:px-6">
                   <Copy className="mr-2 h-4 w-4" />
                   <span className="hidden sm:inline">Copy</span>
                 </Button>
@@ -205,7 +198,7 @@ const Page = () => {
                           setSwitchLoading(true);
                           const res = await axios.post<ApiResponse>(
                             "/api/accept-message",
-                            { acceptMessage: checked }
+                            { acceptMessage: checked },
                           );
                           field.onChange(checked);
                           toast.success(res.data.message);
@@ -232,7 +225,8 @@ const Page = () => {
                     Messages
                   </h2>
                   <p className="mt-1 text-sm text-gray-600 sm:text-base">
-                    {messages.length} message{messages.length !== 1 ? 's' : ''} received
+                    {messages.length} message{messages.length !== 1 ? "s" : ""}{" "}
+                    received
                   </p>
                 </div>
 
@@ -274,7 +268,8 @@ const Page = () => {
                     No messages yet
                   </h3>
                   <p className="max-w-md text-sm text-gray-500 sm:text-base">
-                    When you receive messages, they will appear here. Share your profile link to start receiving messages.
+                    When you receive messages, they will appear here. Share your
+                    profile link to start receiving messages.
                   </p>
                   <Button
                     variant="outline"
